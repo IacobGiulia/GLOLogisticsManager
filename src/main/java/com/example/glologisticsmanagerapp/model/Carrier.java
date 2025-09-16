@@ -3,6 +3,7 @@ package com.example.glologisticsmanagerapp.model;
 public class Carrier {
     private String name;
     private Contact contactInfo;
+    private Rates rates;
 
     public Carrier(String name, Contact contactInfo) {
         this.name = name;
@@ -23,7 +24,7 @@ public class Carrier {
     }
 
     public Rates getShippingRates(){
-        return null;
+        return rates;
     }
 
     @Override

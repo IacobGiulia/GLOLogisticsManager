@@ -32,7 +32,13 @@ public class Route {
     }
 
     public LocalDateTime calculateETA(){
-        return null;
+        final float averageSpeed = 60f;
+
+        float timeInHours = distance/averageSpeed;
+
+        long minutes = (long) (timeInHours * 60);
+
+        return LocalDateTime.now().plusMinutes(minutes);
     }
 
     @Override

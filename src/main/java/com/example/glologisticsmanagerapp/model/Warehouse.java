@@ -35,14 +35,24 @@ public class Warehouse {
         return inventory;
     }
 
-    public boolean addInventory(Item item){
-        if(inventory.size() >= capacity)
+    public boolean addInventory(Item item) {
+        if (inventory.size() >= capacity) {
+            System.out.println("Cannot add item: warehouse is full.");
             return false;
-        return inventory.add(item);
+        }
+        inventory.add(item);
+        System.out.println("Item added: " + item.getName());
+        return true;
     }
 
     public boolean removeInventory(Item item) {
-        return inventory.remove(item);
+        if (inventory.remove(item)) {
+            System.out.println("Item removed: " + item.getName());
+            return true;
+        } else {
+            System.out.println("Item not found in warehouse: " + item.getName());
+            return false;
+        }
     }
 
     @Override

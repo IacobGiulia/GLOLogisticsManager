@@ -37,12 +37,21 @@ public class Shipment {
     public void setWarehouse(Warehouse warehouse) { this.warehouse = warehouse; }
 
     public void updateStatus(Status newStatus) {
-        this.status = Objects.requireNonNull(newStatus, "New status cannot be null");
+        if(newStatus == null)
+            throw new IllegalArgumentException("Status cannot be null");
+        this.status = newStatus;
+        System.out.println("Shipment status updated to: " + newStatus.getDescription());
 
     }
 
     public float calculateShippingCost(){
-        return 0;
+        if(carrier == null || carrier.getShippingRates() == null){
+            throw new IllegalArgumentException("Carrier or rates not set");
+        }
+        Rates rates = carrier.getShippingRates();
+        float cost = weight * rates.getGround();
+        return cost;
+
     }
 
     @Override
