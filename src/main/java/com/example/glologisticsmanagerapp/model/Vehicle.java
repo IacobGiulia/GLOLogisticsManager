@@ -1,11 +1,9 @@
 package com.example.glologisticsmanagerapp.model;
-/**
- * Represents a vehicle used for transporting shipments.
- */
+
 public class Vehicle {
     private String licensePlate;
-    private String type; // e.g., Truck, Van, Bike
-    private float capacity; // in kg
+    private String type;
+    private float capacity;
 
     public Vehicle(String licensePlate, String type, float capacity) {
         this.licensePlate = licensePlate;
@@ -13,7 +11,6 @@ public class Vehicle {
         this.capacity = capacity;
     }
 
-    // --- Getters & Setters ---
     public String getLicensePlate() {
         return licensePlate;
     }

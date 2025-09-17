@@ -2,6 +2,7 @@ package com.example.glologisticsmanagerapp.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LogisticsApplication {
 
@@ -21,10 +22,41 @@ public class LogisticsApplication {
         this.customers = new ArrayList<>();
     }
 
-    // --- Shipment methods ---
     public void createShipment(Shipment shipment) {
-        if (shipment != null) {
-            shipments.add(shipment);
+        if (shipment.getTrackingNumber() == null || shipment.getTrackingNumber().isEmpty()) {
+            shipment.setTrackingNumber(generateUniqueTrackingNumber());
+        }
+        shipments.add(shipment);
+        System.out.println("Shipment created with tracking: " + shipment.getTrackingNumber());
+    }
+
+    public Shipment getShipmentByTrackingNumber(String trackingNumber) {
+        return shipments.stream()
+                .filter(s -> s.getTrackingNumber().equals(trackingNumber))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<Shipment> getShipmentsForCustomer(Customer customer) {
+        return shipments.stream()
+                .filter(s -> s.getReceiver().equals(customer.getContactInfo()))
+                .collect(Collectors.toList());
+    }
+
+    public String generateUniqueTrackingNumber() {
+        String tracking;
+        do {
+            tracking = "TRK-" + (int)(Math.random() * 1000000);
+        } while (getShipmentByTrackingNumber(tracking) != null);
+        return tracking;
+    }
+
+    public void printShipmentDetails(String trackingNumber) {
+        Shipment shipment = getShipmentByTrackingNumber(trackingNumber);
+        if (shipment == null) {
+            System.out.println("No shipment found with tracking number: " + trackingNumber);
+        } else {
+            shipment.printDetails();
         }
     }
 
@@ -35,20 +67,18 @@ public class LogisticsApplication {
     }
 
     public void allocateWarehouse(Shipment shipment) {
-        // Simplificat: aloca primul warehouse disponibil
+
         if (!warehouses.isEmpty()) {
             shipment.setWarehouse(warehouses.get(0));
         }
     }
 
-    // --- Route methods ---
     public void createRoute(Route route) {
         if (route != null) {
             routes.add(route);
         }
     }
 
-    // --- Fleet methods ---
     public void addVehicle(Vehicle vehicle) {
         if (vehicle != null) {
             fleet.add(vehicle);
@@ -59,7 +89,6 @@ public class LogisticsApplication {
         fleet.remove(vehicle);
     }
 
-    // --- Customer methods ---
     public void addCustomer(Customer customer) {
         if (customer != null) {
             customers.add(customer);
@@ -70,7 +99,6 @@ public class LogisticsApplication {
         customers.remove(customer);
     }
 
-    // --- Getters ---
     public List<Shipment> getShipments() {
         return shipments;
     }
@@ -94,4 +122,5 @@ public class LogisticsApplication {
     public List<Customer> getCustomers() {
         return customers;
     }
+
 }
